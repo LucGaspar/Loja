@@ -20,9 +20,9 @@ public class Servidor {
     private static List<Usuario> Usuarios;
     private static List<Produto> Produtos;
     
-	//---------------------------------------
-	// Construtor
-	//  Porta -> Porto de conexÃ£o a clientes
+    //---------------------------------------
+    // Construtor
+    //  Porta -> Porto de conexão a clientes
     public Servidor(int Porta){
         try{
             this.Server = new ServerSocket(Porta);
@@ -32,8 +32,8 @@ public class Servidor {
         }
     }
 
-	//-----------------------
-	// Menu principal
+    //-----------------------
+    // Menu principal
     private static void menu() {
         System.out.println("\nMenu\n");
         System.out.println("1 - Cadastrar produto");
@@ -52,55 +52,55 @@ public class Servidor {
         menu();
     }
 
-	//----------------------
-	// InserÃ§Ã£o dum produto
+    //----------------------
+    // Inserção dum produto
     private static void cadastrarProduto() {
-		// Entradas
+	// Entradas
         System.out.print("\nNome do Produto: ");
         String nome    = new Scanner(System.in).nextLine();
         System.out.print("Empresa do Produto: ");
         String empresa = new Scanner(System.in).nextLine();
-        System.out.print("PreÃ§o: ");
+        System.out.print("Preço: ");
         double preco   = new Scanner(System.in).nextDouble();
         System.out.print("Quantidade inicial: ");
         int   quant    = new Scanner(System.in).nextInt();
-		// Adiciona na lista de produtos
+	// Adiciona na lista de produtos
         boolean add = Produtos.add(new Produto(nome, empresa, preco, quant));
         if (add)
             System.out.println("\nProduto cadastrado com sucesso!");
         
     }
 
-	//-------------------------------------------
-	// Lista produtos com quantidade maior que 0
+    //-------------------------------------------
+    // Lista produtos com quantidade maior que 0
     private static void listarProdutosEmEstoque() {
         Produtos.stream().filter((p) -> (p.Quantidade > 0)).forEach((p) -> {
             System.out.println("Produto: " + p.getNome() + " | Empresa: " +
-                    p.getEmpresa() + " | PreÃ§o: " + p.getPreco() + " | " +
+                    p.getEmpresa() + " | Preço: " + p.getPreco() + " | " +
                     "Quantidade: " + p.getQuantidade());
         });
     }
 
-	//--------------------------------------------
-	// Lista produtos com quantidade menor que 1
+    //--------------------------------------------
+    // Lista produtos com quantidade menor que 1
     private static void listarProdutosEsgotados() {
         Produtos.stream().filter((p) -> (p.Quantidade < 1)).forEach((p) -> {
             System.out.println("Produto: " + p.getNome() + " | Empresa: " +
-                    p.getEmpresa() + " | PreÃ§o: " + p.getPreco());
+                    p.getEmpresa() + " | Preço: " + p.getPreco());
         });
     }
 
-	//-----------------------------------------------
-	// Aumenta a quantidade em estoque de um produto
+    //-----------------------------------------------
+    // Aumenta a quantidade em estoque de um produto
     private static void aumentarQuantidadeDeUmProduto() {
         Produto produto = null;
         while (true){
-			// Entrada
+	    // Entrada
             System.out.print("\nNome do produto: ");
             String nome = new Scanner(System.in).nextLine();
             System.out.print("Empresa do produto: ");
             String empresa = new Scanner(System.in).nextLine();
-			// Procura o produto
+	    // Procura o produto
             for (Produto p : Produtos)
                 if (p.getNome().equals(nome) && p.getEmpresa().equals(empresa))
                     produto = p;
@@ -109,25 +109,25 @@ public class Servidor {
                 System.out.println("\n\nProduto selecionado!");
                 break;
             }
-            System.out.println("\n\nProduto nÃ£o encontrado");
+            System.out.println("\n\nProduto não encontrado");
         }
         System.out.print("\nQuantidade a aumentar: ");
         int quant = new Scanner(System.in).nextInt();
-		// Aumenta a quantidade se encontrou o produto
+	// Aumenta a quantidade se encontrou o produto
         produto.setQuantidade(produto.getQuantidade() + quant);
         System.out.println("\n\nQuantidade atual: " + produto.getQuantidade());
     }
     
-	//--------------------------------------------
-	// Atualiza os arquivos CSV e fecha o servidor
+    //--------------------------------------------
+    // Atualiza os arquivos CSV e fecha o servidor
     private static void sair() {
         escreverCSV("Usuarios.csv", "Produtos.csv");
         System.exit(0);
     }
     
-	//----------------------------------------
-	// Atualiza o CSV com a lista em RAM
-	// utiliza o delimitador | entre os campos
+    //----------------------------------------
+    // Atualiza o CSV com a lista em RAM
+    // utiliza o delimitador | entre os campos
     private static void escreverCSV(String usersString, String productsString) {
         try (PrintWriter csv = new PrintWriter(usersString)) {
             Usuarios.stream().forEach((u) -> {
@@ -150,8 +150,8 @@ public class Servidor {
             System.out.println("Problemas na escrita: " + e);}
     }
     
-	//--------------------------------------------
-	// Carrega os arquivos CSV para listas em RAM
+    //--------------------------------------------
+    // Carrega os arquivos CSV para listas em RAM
     private static void carregarCSV(String usersString, String productsString){
         Produtos = new ArrayList<>();
         Usuarios = new ArrayList<>();
@@ -159,7 +159,7 @@ public class Servidor {
         String line; 
         // Usuarios
         try {            
-			// Cria o arquivo se ele ainda nÃ£o existir
+	    // Cria o arquivo se ele ainda não existir
             File arq = new File(usersString);
             if (!arq.exists())
                 arq.createNewFile();
@@ -174,7 +174,7 @@ public class Servidor {
         
         // Produtos
         try {            
-			// Cria o arquivo se ele ainda nÃ£o existir
+	    // Cria o arquivo se ele ainda não existir
             File arq = new File(productsString);
             if (!arq.exists())
                 arq.createNewFile();
@@ -190,17 +190,17 @@ public class Servidor {
         
     }
     
-	//--------------------
-	// Processo principal
+    //--------------------
+    // Processo principal
     public static void main(String[] args){
-		// Cria o servidor
+	// Cria o servidor
         Servidor servidor = new Servidor(Integer.parseInt(args[0]));
-		// Thread que espera conexÃµes de clientes
+	// Thread que espera conexões de clientes
         new Thread( () -> {
             try {
                 while (true){
                     Socket client = servidor.Server.accept();
-					// Thread que espera informaÃ§Ãµes dos clientes
+		    // Thread que espera informações dos clientes
                     new Thread( () -> {
                         try {
                             new ManipulaCliente( client.getInputStream(),
@@ -297,12 +297,12 @@ public class Servidor {
         }
     }
     
-	//==================================
-	//	ManipulaCliente
-	//----------------------------------
-	// ResponsÃ¡vel por tratar as infos
-	// recebidas de cada clientes
-	//----------------------------------
+    //==================================
+    //	ManipulaCliente
+    //----------------------------------
+    // Responsável por tratar as infos
+    // recebidas de cada clientes
+    //----------------------------------
     private static class ManipulaCliente{
         private final Scanner     leituraCliente;
         private final PrintStream escritaCliente;
@@ -313,8 +313,8 @@ public class Servidor {
             atualizacao();
         }
         
-		//---------------------------------------------------------------
-		// Para cada opÃ§Ã£o possÃ­vel do programa chama o mÃ©todo especÃ­fico
+	//---------------------------------------------------------------
+	// Para cada opção possível do programa chama o método específico
         public void atualizacao() {
             while (leituraCliente.hasNextLine()){
                 String line = leituraCliente.nextLine();
@@ -336,24 +336,24 @@ public class Servidor {
             }
         }
 
-		//-------------------------------
-		// Registro dum novo usuÃ¡rio
+	//-------------------------------
+	// Registro dum novo usuário
         private void RegistrarUsuario(String nick, String senha) {
-			// Verifica se jÃ¡ nÃ£o existe
+	    // Verifica se já não existe
             for (Usuario u : Usuarios)
                 if (u.getNick().equals(nick)){
                     escritaCliente.println("AlreadyExists!");
                     return;
                 }
-            // Adiciona na lista de UsuÃ¡rios
+            // Adiciona na lista de Usuários
             Usuarios.add(new Usuario(nick, senha));
             escritaCliente.println("Sucess!");
         }
 
-		//-----------------------------------
-		// Entra com um usuÃ¡rio jÃ¡ existente
+	//-----------------------------------
+	// Entra com um usuário já existente
         private void LogarUsuario(String nick, String senha) {
-			// Procura o usuÃ¡rio com a determinada senha
+	    // Procura o usuário com a determinada senha
             for (Usuario u : Usuarios)
                 if (u.getNick().equals(nick) && u.getSenha().equals(senha)){
                     escritaCliente.println("Sucess!");
@@ -363,20 +363,20 @@ public class Servidor {
             escritaCliente.println("Incorrect!");
         }
 
-		//----------------------------------------
-		// Lista todos os produtos para o usuÃ¡rio
+	//----------------------------------------
+	// Lista todos os produtos para o usuário
         private void ListarProUsuario() {
             Produtos.stream().forEach((p) -> {
                 escritaCliente.println(
                         "Produto: "       + p.getNome()    +
                         " | Empresa: "    + p.getEmpresa() +
-                        " | PreÃ§o: "      + p.getPreco()   +
+                        " | Preço: "      + p.getPreco()   +
                         " | Quantidade: " + p.getQuantidade());
             });
         }
 
-		//-------------------------------
-		// Efetua a compra de um produto
+	//-------------------------------
+	// Efetua a compra de um produto
         private void ComprarProduto(String produto, String empresa, String q) {
             int quant = Integer.parseInt(q);
             for (Produto p : Produtos)

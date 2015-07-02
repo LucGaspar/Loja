@@ -13,10 +13,10 @@ public class Cliente {
     Scanner leituraServidor;
     PrintStream escritaServidor;
     
-	//--------------------------------------
-	// Construtor
-	// 	ip    -> EndereÃ§o do servidor
-	//  porta -> Porto para conexÃ£o
+    //--------------------------------------
+    // Construtor
+    // 	ip    -> Endereço do servidor
+    //  porta -> Porto para conexão
     public Cliente(String ip, int porta){
         try {
             cliente = new Socket(ip, porta);
@@ -29,12 +29,12 @@ public class Cliente {
     }
     
     public static void main(String[] args){
-		// Argumentos recebidos pela linha de comando
+	// Argumentos recebidos pela linha de comando
         new Cliente(args[0], Integer.parseInt(args[1]));
     }
 
-	//-------------------------
-	// Menu de Login/Cadastro
+    //-------------------------
+    // Menu de Login/Cadastro
     private void processaInformacoesRecebidas() {
         System.out.println("\n1 - Logar");
         System.out.println("2 - Registrar");
@@ -47,28 +47,28 @@ public class Cliente {
         processaInformacoesRecebidas();
     }
 
-	//---------------------------------------------------
-	// ResponsÃ¡vel pela entrada e processamento do login
+    //---------------------------------------------------
+    // Responsável pela entrada e processamento do login
     private void logar() {
         
-		// Entradas
+	// Entradas
         System.out.print("\nUsuario: ");
         String user = new Scanner(System.in).nextLine();
         System.out.print("Senha: ");
         String pass = new Scanner(System.in).nextLine();
-		// Processamento
+	// Processamento
         escritaServidor.println("Login");
         escritaServidor.println(user);
         escritaServidor.println(pass);
         
-		// SincronizaÃ§Ã£o com o Servidor
+	// Sincronização com o Servidor
         try {
             Thread.sleep(2000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-		// Verifica os resultados da tentativa de entrar
+	// Verifica os resultados da tentativa de entrar
         if (leituraServidor.nextLine().equals("Sucess!")){
             System.out.println("\nLogado com sucesso!");
             new Thread( () -> { recebimento(); }).start();
@@ -78,8 +78,8 @@ public class Cliente {
             System.out.println("\nUsuario ou senha incorreta");
     }
     
-	//-----------------------------------------------------------
-	// Processa o que Ã© recebido do servidor (Compra e Listagem)
+    //-----------------------------------------------------------
+    // Processa o que é recebido do servidor (Compra e Listagem)
     private void recebimento(){
         while (leituraServidor.hasNextLine()){
             String line = leituraServidor.nextLine();
@@ -99,8 +99,8 @@ public class Cliente {
         }
     }
 	
-	//--------------------------
-	// Menu Principal
+    //--------------------------
+    // Menu Principal
     private void menu(){
         System.out.println("\nMenu\n");
         System.out.println("1 - Listar");
@@ -116,27 +116,27 @@ public class Cliente {
         menu();
     }
 
-	//----------------------------------------
-	// Registra um novo usuÃ¡rio
+    //----------------------------------------
+    // Registra um novo usuário
     private void registrar() {
-		// Entradas
+	// Entradas
         System.out.print("\nUsuario: ");
         String user = new Scanner(System.in).nextLine();
         System.out.print("Senha: ");
         String pass = new Scanner(System.in).nextLine();
-		// Processamento no servidor
+	// Processamento no servidor
         escritaServidor.println("Registro");
         escritaServidor.println(user);
         escritaServidor.println(pass);
         
-		// SincronizaÃ§Ã£o com o servidor
+	// Sincronização com o servidor
         try {
             Thread.sleep(1500);
         } catch (InterruptedException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-		// Avalia os resultados
+	// Avalia os resultados
         if (leituraServidor.nextLine().equals("Sucess!"))
             System.out.println("Usuario cadastrado com sucesso!");
         else
@@ -144,18 +144,18 @@ public class Cliente {
 
     }
 
-	//------------------
-	// Fecha o programa
+    //------------------
+    // Fecha o programa
     private void sair() {
         System.exit(0);
     }
 
-	//-------------------------
-	// Lista todos os produtos
+    //-------------------------
+    // Lista todos os produtos
     private void listar() {
-		// Processa no servidor
+	// Processa no servidor
         escritaServidor.println("Listar");
-		// SincronizaÃ§Ã£o com o servidor
+	// Sincronização com o servidor
         try {
             Thread.sleep(700);
         } catch (InterruptedException ex) {
@@ -163,10 +163,10 @@ public class Cliente {
         }
     }
 
-	//-------------------------
-	// Compra Ãºnico produto
+    //-------------------------
+    // Compra único produto
     private void comprar() {
-		// Entradas
+	// Entradas
         System.out.print("\nProduto: ");
         String nome = new Scanner(System.in).nextLine();
         System.out.print("Empresa: ");
@@ -174,13 +174,13 @@ public class Cliente {
         System.out.print("Quantidade: ");
         String quant = new Scanner(System.in).nextLine();
         
-		// Processamento no servidor
+	// Processamento no servidor
         escritaServidor.println("Comprar");
         escritaServidor.println(nome);
         escritaServidor.println(empresa);
         escritaServidor.println(quant);
         
-		// SincronizaÃ§Ã£o com o servidor
+	// Sincronização com o servidor
         try {
             Thread.sleep(700);
         } catch (InterruptedException ex) {
